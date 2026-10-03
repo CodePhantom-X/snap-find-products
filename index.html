@@ -17,7 +17,6 @@
           <p class="eyebrow">دليل الموردين</p>
           <h1>دليل المنتجات</h1>
         </div>
-        <a class="admin-link" href="admin.html" aria-label="فتح لوحة الإدارة">⚙</a>
       </header>
 
       <section class="search-hero" aria-labelledby="search-title">
@@ -31,10 +30,11 @@
         </label>
 
         <div class="photo-actions">
-          <label class="camera-button" for="photo-input">
+          <button id="open-camera" class="camera-button" type="button">
             <span class="camera-icon">◉</span>
             <span><strong>التقط صورة المنتج</strong><small>ابحث عن المنتج المشابه</small></span>
-          </label>
+          </button>
+          <label class="choose-image" for="photo-input">أو اختر صورة موجودة في الجوال</label>
           <input id="photo-input" type="file" accept="image/*" capture="environment" hidden />
         </div>
         <div id="photo-status" class="photo-status" hidden></div>
@@ -58,6 +58,13 @@
     <dialog id="product-dialog" class="product-dialog">
       <button id="close-dialog" class="close-dialog" aria-label="إغلاق">×</button>
       <div id="dialog-content"></div>
+    </dialog>
+    <dialog id="camera-dialog" class="camera-dialog">
+      <div class="camera-dialog-head"><strong>صوّر المنتج بوضوح</strong><button id="close-camera" type="button" aria-label="إغلاق الكاميرا">×</button></div>
+      <video id="camera-video" autoplay playsinline muted></video>
+      <canvas id="camera-canvas" hidden></canvas>
+      <div class="camera-dialog-actions"><button id="capture-photo" type="button">التقاط الصورة</button></div>
+      <p id="camera-error" class="camera-error" hidden></p>
     </dialog>
     <script src="app.js"></script>
   </body>

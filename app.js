@@ -8,6 +8,7 @@ const defaultProducts = [
 ];
 const categoryIcons = { 'أحذية':'⌁', 'رجالي':'♙', 'نسائي':'♧', 'أطفال':'♧', 'طرح نسائية':'◌', 'قفازات':'♨', 'شرابات':'◍' };
 const appState = { category: '', term: '', photo: false };
+let cameraStream = null;
 function getProducts(){ try { return [...defaultProducts, ...JSON.parse(localStorage.getItem('productGuideProducts') || '[]')]; } catch { return defaultProducts; } }
 function filterProducts(){ const term = appState.term.trim().toLowerCase(); return getProducts().filter(p => (!appState.category || p.category === appState.category) && (!term || Object.values(p).some(v => String(v).toLowerCase().includes(term)))); }
 function renderCategories(){ const list = document.querySelector('#category-list'); const categories = [...new Set(getProducts().map(p=>p.category))]; list.innerHTML = categories.map(c => `<button class="chip ${appState.category===c?'active':''}" data-category="${c}">${categoryIcons[c]||'◇'} ${c}</button>`).join(''); list.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{ appState.category = appState.category===b.dataset.category ? '' : b.dataset.category; render(); })); }
@@ -16,6 +17,13 @@ function render(){ const products=filterProducts(); document.querySelector('#res
 function openProduct(p){ const dialog=document.querySelector('#product-dialog'); document.querySelector('#dialog-content').innerHTML=`<img class="dialog-image" src="${p.image}" alt="${p.name}"/><div class="dialog-details"><div class="dialog-code"><div class="label">كود المورد</div><div class="supplier-code">${p.supplierCode}</div></div><h2 class="dialog-name">${p.name}</h2><div class="detail-row"><span>رقم المنتج</span><strong>${p.productNumber}</strong></div><div class="detail-row"><span>فئة المنتج</span><strong>${p.category}</strong></div><div class="detail-row"><span>لون المنتج</span><strong>${p.color}</strong></div><div class="detail-row"><span>اسم المورد</span><strong>${p.supplier}</strong></div></div>`; dialog.showModal(); }
 document.querySelector('#text-search').addEventListener('input', e=>{ appState.term=e.target.value; render(); });
 document.querySelector('#clear-filters').addEventListener('click',()=>{ appState.category=''; appState.term=''; document.querySelector('#text-search').value=''; render(); });
-document.querySelector('#photo-input').addEventListener('change', e=>{ if(!e.target.files?.[0])return; const status=document.querySelector('#photo-status'); status.hidden=false; status.textContent='تمت إضافة الصورة. في نسخة الخادم سيظهر هنا أقرب تطابق ذكي؛ هذه الواجهة تعرض الآن نتائج التجربة.'; appState.photo=true; render(); });
+function photoReady(){ const status=document.querySelector('#photo-status'); status.hidden=false; status.textContent='تمت إضافة الصورة. في نسخة الخادم سيظهر هنا أقرب تطابق ذكي؛ هذه الواجهة تعرض الآن نتائج التجربة.'; appState.photo=true; render(); }
+function stopCamera(){ if(cameraStream){ cameraStream.getTracks().forEach(track=>track.stop()); cameraStream=null; } }
+async function openCamera(){ const dialog=document.querySelector('#camera-dialog'); const error=document.querySelector('#camera-error'); error.hidden=true; dialog.showModal(); try { cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}); const video=document.querySelector('#camera-video'); video.srcObject=cameraStream; await video.play(); } catch (err) { error.hidden=false; error.textContent='لم يتم السماح بالكاميرا. افتح إعدادات المتصفح واسمح للموقع باستخدام الكاميرا، أو اختر صورة من الجوال.'; } }
+document.querySelector('#open-camera').addEventListener('click', openCamera);
+document.querySelector('#close-camera').addEventListener('click',()=>{ stopCamera(); document.querySelector('#camera-dialog').close(); });
+document.querySelector('#capture-photo').addEventListener('click',()=>{ const video=document.querySelector('#camera-video'); if(!video.videoWidth) return; const canvas=document.querySelector('#camera-canvas'); canvas.width=video.videoWidth; canvas.height=video.videoHeight; canvas.getContext('2d').drawImage(video,0,0); stopCamera(); document.querySelector('#camera-dialog').close(); photoReady(); });
+document.querySelector('#camera-dialog').addEventListener('close',stopCamera);
+document.querySelector('#photo-input').addEventListener('change', e=>{ if(e.target.files?.[0]) photoReady(); });
 document.querySelector('#close-dialog').addEventListener('click',()=>document.querySelector('#product-dialog').close());
 render();
