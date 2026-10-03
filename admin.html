@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111111" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>إدارة دليل المنتجات</title>
+  </head>
+  <body>
+    <main class="app-shell admin-shell">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">⌑</div>
+        <div><p class="eyebrow">لوحة خاصة</p><h1>إدارة المنتجات</h1></div>
+        <a class="admin-link" href="index.html" aria-label="العودة للتطبيق">⌂</a>
+      </header>
+
+      <section class="admin-intro">
+        <p class="section-kicker">إضافة منتج</p>
+        <h2>أدخل بيانات المنتج وصورته</h2>
+        <p>هذه النسخة التجريبية تحفظ الإضافات في هذا الجهاز فقط. عند تشغيل الخادم ستُحفظ للجميع.</p>
+      </section>
+
+      <form id="product-form" class="product-form">
+        <label>كود المورد<input name="supplierCode" required placeholder="مثال: 0124" inputmode="numeric" /></label>
+        <label>رقم المنتج<input name="productNumber" required placeholder="مثال: SH-0559" /></label>
+        <label>اسم المنتج<input name="name" required placeholder="مثال: حذاء رسمي كلاسيكي" /></label>
+        <label>الفئة
+          <select name="category" required>
+            <option value="أحذية">أحذية</option><option value="رجالي">رجالي</option><option value="نسائي">نسائي</option><option value="أطفال">أطفال</option><option value="طرح نسائية">طرح نسائية</option><option value="قفازات">قفازات</option><option value="شرابات">شرابات</option>
+          </select>
+        </label>
+        <label>لون المنتج<input name="color" required placeholder="مثال: أسود" /></label>
+        <label>اسم المورد<input name="supplier" required placeholder="مثال: المورد الذهبي" /></label>
+        <label class="full-width">صورة المنتج<input name="image" type="file" accept="image/*" /></label>
+        <button class="save-button" type="submit">حفظ المنتج</button>
+      </form>
+      <p id="form-message" class="form-message" aria-live="polite"></p>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>

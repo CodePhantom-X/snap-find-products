@@ -1,0 +1,10 @@
+{
+  "name": "دليل المنتجات",
+  "short_name": "دليل المنتجات",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "lang": "ar",
+  "dir": "rtl"
+}

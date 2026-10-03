@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111111" />
+    <meta name="description" content="دليل المنتجات - ابحث بالاسم أو الصورة" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>دليل المنتجات</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">⌑</div>
+        <div>
+          <p class="eyebrow">دليل الموردين</p>
+          <h1>دليل المنتجات</h1>
+        </div>
+        <a class="admin-link" href="admin.html" aria-label="فتح لوحة الإدارة">⚙</a>
+      </header>
+
+      <section class="search-hero" aria-labelledby="search-title">
+        <p class="section-kicker">البحث السريع</p>
+        <h2 id="search-title">اعثر على المنتج خلال ثوانٍ</h2>
+        <p>ابحث بالاسم، أو صوّر المنتج للحصول على أقرب النتائج.</p>
+
+        <label class="name-search" for="text-search">
+          <span>⌕</span>
+          <input id="text-search" type="search" placeholder="ابحث بالاسم أو رقم المنتج أو كود المورد" autocomplete="off" />
+        </label>
+
+        <div class="photo-actions">
+          <label class="camera-button" for="photo-input">
+            <span class="camera-icon">◉</span>
+            <span><strong>التقط صورة المنتج</strong><small>ابحث عن المنتج المشابه</small></span>
+          </label>
+          <input id="photo-input" type="file" accept="image/*" capture="environment" hidden />
+        </div>
+        <div id="photo-status" class="photo-status" hidden></div>
+      </section>
+
+      <section class="categories" aria-label="فئات المنتجات">
+        <div class="section-heading"><h2>الفئات</h2><button id="clear-filters" type="button">إظهار الكل</button></div>
+        <div id="category-list" class="chip-list"></div>
+      </section>
+
+      <section class="results" aria-labelledby="results-title">
+        <div class="section-heading">
+          <div><p class="section-kicker">النتائج</p><h2 id="results-title">المنتجات</h2></div>
+          <span id="result-count" class="count"></span>
+        </div>
+        <div id="results-grid" class="product-grid"></div>
+        <p id="empty-state" class="empty-state" hidden>لم نجد منتجاً مطابقاً. جرّب كلمة أخرى أو اختر فئة مختلفة.</p>
+      </section>
+    </main>
+
+    <dialog id="product-dialog" class="product-dialog">
+      <button id="close-dialog" class="close-dialog" aria-label="إغلاق">×</button>
+      <div id="dialog-content"></div>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
